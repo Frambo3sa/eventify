@@ -1,5 +1,5 @@
 // src/services/firestore.js
-import { db, storage } from "../firebase";
+import { db } from "../firebase";
 import {
   collection,
   addDoc,
@@ -11,14 +11,13 @@ import {
   updateDoc,
   orderBy
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-// ------- UPLOAD DE BANNER -------
-export async function uploadBanner(file, folder = "banners") {
-  const filename = `${Date.now()}_${file.name}`;
-  const storageRef = ref(storage, `${folder}/${filename}`);
-  await uploadBytes(storageRef, file);
-  return await getDownloadURL(storageRef);
+// ------- (REMOVIDO) UPLOAD DE BANNER -------
+// Agora o banner é salvo em Base64 diretamente no Firestore.
+// NÃO PRECISA mais usar Firebase Storage.
+// Mantemos aqui apenas uma função vazia caso algum import antigo exista.
+export function uploadBanner() {
+  return null;
 }
 
 // ------- CRIAR EVENTO -------
@@ -87,21 +86,24 @@ export async function getUserById(uid) {
   if (!snap.exists()) return null;
   return snap.data();
 }
+
 // ---- PEGAR PRESENÇAS DO ALUNO ----
 export async function getPresencesByStudent(studentId) {
   const colRef = collection(db, "subscriptions");
-  const q = query(colRef, where("studentId", "==", studentId), where("presence", "==", true));
+  const q = query(
+    colRef,
+    where("studentId", "==", studentId),
+    where("presence", "==", true)
+  );
   const snaps = await getDocs(q);
 
   const list = [];
   for (let d of snaps.docs) {
     const sub = d.data();
 
-    // pegar dados do evento
     const eventSnap = await getDoc(doc(db, "events", sub.eventId));
     const eventData = eventSnap.exists() ? eventSnap.data() : null;
 
-    // pegar dados do professor que marcou
     const profSnap = await getDoc(doc(db, "users", sub.markedBy));
     const profData = profSnap.exists() ? profSnap.data() : null;
 

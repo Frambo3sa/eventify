@@ -1,6 +1,6 @@
 // src/pages/professor/CriarEvento.jsx
 import { useState } from "react";
-import { uploadBanner, createEvent } from "../../services/firestore";
+import { createEvent } from "../../services/firestore";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -12,18 +12,27 @@ export default function ProfessorCriarEvento() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [vagas, setVagas] = useState("");
-  const [file, setFile] = useState(null);
+  const [bannerBase64, setBannerBase64] = useState("");
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
+
+  // Converte imagem para Base64
+  function handleImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setBannerBase64(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
 
     try {
-      let bannerUrl = "";
-      if (file) bannerUrl = await uploadBanner(file);
-
       const startAt = new Date(`${date} ${time}`).toISOString();
 
       const evData = {
@@ -32,12 +41,12 @@ export default function ProfessorCriarEvento() {
         description,
         location,
         startAt,
-        bannerUrl,
+        bannerUrl: bannerBase64,
         maxVagas: vagas ? Number(vagas) : null,
         createdBy: auth.currentUser.uid,
       };
 
-     await createEvent(evData);
+      await createEvent(evData);
 
       setLoading(false);
       nav("/professor/home");
@@ -104,11 +113,7 @@ export default function ProfessorCriarEvento() {
 
         <div className="mb-3">
           <label className="block mb-1">Banner</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
+          <input type="file" accept="image/*" onChange={handleImage} />
         </div>
 
         <button

@@ -30,13 +30,23 @@ export default function HomeAluno() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Eventos Disponíveis</h2>
 
-        {/* BOTÃO PARA VER AS PRESENÇAS */}
-        <button
-          className="bg-green-600 text-white px-4 py-2 rounded shadow"
-          onClick={() => nav("/aluno/presencas")}
-        >
-          Minhas Presenças
-        </button>
+        <div className="flex gap-2">
+          {/* BOTÃO PRESENÇAS */}
+          <button
+            className="bg-green-600 text-white px-4 py-2 rounded shadow"
+            onClick={() => nav("/aluno/presencas")}
+          >
+            Minhas Presenças
+          </button>
+
+          {/* BOTÃO AGENDA */}
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded shadow"
+            onClick={() => nav("/aluno/agenda")}
+          >
+            Agenda
+          </button>
+        </div>
       </div>
 
       {events.length === 0 ? (
