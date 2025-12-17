@@ -11,6 +11,7 @@ import {
   updateDoc,
   orderBy
 } from "firebase/firestore";
+import { deleteDoc } from "firebase/firestore";
 
 // ------- (REMOVIDO) UPLOAD DE BANNER -------
 // Agora o banner é salvo em Base64 diretamente no Firestore.
@@ -87,6 +88,11 @@ export async function getUserById(uid) {
   return snap.data();
 }
 
+
+export async function deleteEvent(eventId) {
+  const ref = doc(db, "events", eventId);
+  await deleteDoc(ref);
+}
 // ---- PEGAR PRESENÇAS DO ALUNO ----
 export async function getPresencesByStudent(studentId) {
   const colRef = collection(db, "subscriptions");

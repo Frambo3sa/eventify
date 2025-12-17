@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createEvent } from "../../services/firestore";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 export default function ProfessorCriarEvento() {
   const [title, setTitle] = useState("");
@@ -57,72 +58,100 @@ export default function ProfessorCriarEvento() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-semibold mb-4">Criar Evento</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          className="w-full border p-2 rounded mb-3"
-          placeholder="Título"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-
-        <input
-          className="w-full border p-2 rounded mb-3"
-          placeholder="Disciplina"
-          value={discipline}
-          onChange={(e) => setDiscipline(e.target.value)}
-        />
-
-        <textarea
-          className="w-full border p-2 rounded mb-3"
-          placeholder="Descrição"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-
-        <input
-          className="w-full border p-2 rounded mb-3"
-          placeholder="Local"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-
-        <div className="flex gap-2 mb-3">
-          <input
-            type="date"
-            className="border p-2 rounded"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-
-          <input
-            type="time"
-            className="border p-2 rounded"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-          />
-        </div>
-
-        <input
-          className="w-full border p-2 rounded mb-3"
-          placeholder="Número de vagas (vazio = ilimitado)"
-          value={vagas}
-          onChange={(e) => setVagas(e.target.value)}
-        />
-
-        <div className="mb-3">
-          <label className="block mb-1">Banner</label>
-          <input type="file" accept="image/*" onChange={handleImage} />
-        </div>
-
-        <button
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-          disabled={loading}
-        >
-          {loading ? "Criando..." : "Criar Evento"}
+    <div className="min-h-screen bg-[#FFFFFF] flex flex-col">
+      {/* HEADER */}
+      <header className="bg-[#135F85] text-white p-4 flex items-center shadow">
+        <button onClick={() => nav("/professor/home")}>
+          <ArrowLeft size={28} className="mr-3" />
         </button>
-      </form>
+        <h1 className="text-xl font-bold">Criar Evento</h1>
+      </header>
+
+      {/* FORM CONTAINER */}
+      <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow mt-6 border border-[#135F85] w-full">
+        <form onSubmit={handleSubmit}>
+
+          <label className="block font-semibold text-[#135F85] mb-1">Título</label>
+          <input
+            className="w-full border border-[#135F85] p-2 rounded mb-4"
+            placeholder="Ex: Aula de Reposição"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+
+          <label className="block font-semibold text-[#135F85] mb-1">Disciplina</label>
+          <input
+            className="w-full border border-[#135F85] p-2 rounded mb-4"
+            placeholder="Ex: Matemática"
+            value={discipline}
+            onChange={(e) => setDiscipline(e.target.value)}
+          />
+
+          <label className="block font-semibold text-[#135F85] mb-1">Descrição</label>
+          <textarea
+            className="w-full border border-[#135F85] p-2 rounded mb-4"
+            placeholder="Descrição do evento"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+
+          <label className="block font-semibold text-[#135F85] mb-1">Local</label>
+          <input
+            className="w-full border border-[#135F85] p-2 rounded mb-4"
+            placeholder="Ex: Sala 12"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+
+          {/* DATA + HORA */}
+          <div className="flex gap-4 mb-4">
+            <div className="flex-1">
+              <label className="block font-semibold text-[#135F85] mb-1">Data</label>
+              <input
+                type="date"
+                className="w-full border border-[#135F85] p-2 rounded"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
+
+            <div className="flex-1">
+              <label className="block font-semibold text-[#135F85] mb-1">Hora</label>
+              <input
+                type="time"
+                className="w-full border border-[#135F85] p-2 rounded"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <label className="block font-semibold text-[#135F85] mb-1">Número de vagas</label>
+          <input
+            className="w-full border border-[#135F85] p-2 rounded mb-4"
+            placeholder="Deixe vazio para ilimitado"
+            value={vagas}
+            onChange={(e) => setVagas(e.target.value)}
+          />
+
+          {/* BANNER */}
+          <label className="block font-semibold text-[#135F85] mb-1">Banner</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImage}
+            className="mb-4"
+          />
+
+          {/* BOTÃO */}
+          <button
+            className="bg-[#135F85] text-white px-4 py-2 rounded-xl w-full shadow hover:opacity-90 transition"
+            disabled={loading}
+          >
+            {loading ? "Criando..." : "Criar Evento"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

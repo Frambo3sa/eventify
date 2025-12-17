@@ -11,11 +11,14 @@ import HomeAluno from "./pages/aluno/HomeAluno";
 import AgendaAluno from "./pages/aluno/AgendaAluno";
 import EventoAluno from "./pages/aluno/EventoAluno";
 import PresencasAluno from "./pages/aluno/PresencasAluno";
+import PerfilAluno from "./pages/aluno/PerfilAluno";
+
 /* Professor */
 import HomeProfessor from "./pages/professor/HomeProfessor";
 import CriarEvento from "./pages/professor/CriarEvento";
 import AgendaProfessor from "./pages/professor/AgendaProfessor";
 import InscritosEvento from "./pages/professor/InscritosEvento";
+import PerfilProfessor from "./pages/professor/PerfilProfessor";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -38,6 +41,7 @@ export default function App() {
       <Route path="/aluno/evento/:id" element={
         <ProtectedRoute role="aluno"><EventoAluno /></ProtectedRoute>
       } />
+      <Route path="/aluno/perfil" element={<PerfilAluno />} />
 
       {/* Professor */}
       <Route path="/professor/home" element={
@@ -52,6 +56,7 @@ export default function App() {
       <Route path="/professor/evento/:id/inscritos" element={
         <ProtectedRoute role="professor"><InscritosEvento /></ProtectedRoute>
       } />
+      <Route path="/professor/perfil" element={<PerfilProfessor />} />
     </Routes>
   );
 }

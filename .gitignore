@@ -25,17 +25,12 @@ dist-ssr/
 # -----------------------------------------
 # Environment variables (IMPORTANT)
 # -----------------------------------------
-.env
-.env.local
-.env.*.local
-.env.development.local
-.env.production.local
-.env.test.local
+
 
 # -----------------------------------------
 # Firebase
 # -----------------------------------------
-firebase-debug.log
+
 
 # -----------------------------------------
 # OS / Cache
